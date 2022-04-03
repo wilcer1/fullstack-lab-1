@@ -1,16 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../model/User");
-
-function setID(){
-    const users = await userSchema.find();
-    var id = 0;
-    users.array.forEach(element => {
-        id++;
-    });
-    return id;
-}
-
+const User = require("../model/User")
 
 
 router.get("/users", async (req, res) => {
@@ -21,9 +11,9 @@ router.get("/users", async (req, res) => {
 
 router.post("/user", async (req, res) => {
     const user = new User({
-        id: setID(),
         name: req.body.name,
-        email: req.body.email
+        email: req.body.email,
+        password: req.body.password
     });
     await user.save();
     res.send(user);
