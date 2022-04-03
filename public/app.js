@@ -47,10 +47,9 @@ function GFG_FUN(list) {
     var cols = [];
      
     for (var i = 0; i < list.length; i++) {
-        console.log(list[i]);
+        
         for (var k in list[i]) {
             if (cols.indexOf(k) === -1) {
-                 
                 // Push all keys to the array
                 cols.push(k);
             }
@@ -64,13 +63,16 @@ function GFG_FUN(list) {
     var tr = table.insertRow(-1);
      
     for (var i = 0; i < cols.length; i++) {
-         
-        // Create the table header th element
+        
+    
+              // Create the table header th element
         var theader = document.createElement("th");
         theader.innerHTML = cols[i];
          
         // Append columnName to the table row
         tr.appendChild(theader);
+        
+      
     }
      
     // Adding the data to the table
