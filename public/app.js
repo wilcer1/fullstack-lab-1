@@ -36,8 +36,7 @@ fetch('/api/users', {
     if(response.error) {
         errorMsg.innerHTML = response.error;
     } else {
-      const users = response;
-      GFG_FUN(users)
+      GFG_FUN(response);
       
     }
 });
@@ -47,7 +46,7 @@ function GFG_FUN(list) {
     for (var i = 0; i < list.length; i++) {
         
         for (var k in list[i]) {
-            if (cols.indexOf(k) === -1) {
+            if (cols.indexOf(k) === -1 && (k != "_id" && k !="__v")) {
                 // Push all keys to the array
                 cols.push(k);
             }
@@ -69,6 +68,7 @@ function GFG_FUN(list) {
          
         // Append columnName to the table row
         tr.appendChild(theader);
+      
         
       
     }
@@ -83,11 +83,49 @@ function GFG_FUN(list) {
              
             // Inserting the cell at particular place
             cell.innerHTML = list[i][cols[j]];
+            cell.setAttribute("contenteditable", true);
+            
         }
+
+        var cell = trow.insertCell(-1);
+        const id = list[i].id;
+        const name = cell.value;
+        console.log(trow.childNodes[1]);
+        // console.log(tr.childNodes[-1]);
+        
+        const email = list[i].email;
+        var updbutton = document.createElement("button");
+        updbutton.innerHTML = "Update";
+        updbutton.onclick = () => {updateUser(id, name, email)};
+        cell.appendChild(updbutton);
+        var delbutton = document.createElement("button");
+        delbutton.innerHTML = "Delete";
+        
+        delbutton.onclick = () => {deleteUser(id)};
+        cell.appendChild(delbutton);
     }
      
     // Add the newly created table containing json data
     var el = document.getElementById("table");
     el.innerHTML = "";
     el.appendChild(table);
-}   
+}  
+
+function updateUser(id, name, email){
+    fetch(`/api/users/${id}`, { 
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "name": name,
+            "email": email
+        }
+    });
+}
+function deleteUser(id){
+    fetch(`/api/users/${id}`, { 
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+}

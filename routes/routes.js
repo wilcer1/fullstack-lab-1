@@ -4,7 +4,7 @@ const User = require("../model/User");
 
 async function setID(){
     const users = await User.find();
-    var id = 0;
+    var id = 1;
     for(let i = 0; i < users.length ; i++){
        id++;
     }
@@ -41,16 +41,16 @@ router.get("/users/:id", async (req, res) => {
 
 router.patch("/users/:id", async (req, res) => {
     try {
-    const user = await User.findOne({ _id: req.params.id });
-    if (req.body.title) {
-    user.title = req.body.title;
-    }
-    if (req.body.content) {
-    user.content = req.body.content;
-    }
+    const user = await User.findOne({ id: req.params.id });
+    console.log(req.header("name"));
+    user.name = req.header("name");
+
+    user.email = req.header("email");
+    
     await user.save();
     res.send(user);
-    } catch {
+    } catch (error){
+        console.log(error);
     res.status(404);
     res.send({ error: "user doesn't exist!" });
     }
@@ -58,7 +58,7 @@ router.patch("/users/:id", async (req, res) => {
 
 router.delete("/users/:id", async (req, res) => {
     try {
-    await User.deleteOne({ _id: req.params.id })
+    await User.deleteOne({ id: req.params.id })
     res.status(204).send();
     } catch {
     res.status(404);
