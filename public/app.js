@@ -33,69 +33,60 @@ fetch('/api/users', {
 })
 .then(res => res.json())
 .then(response => {
-    if(response.error) {
-        errorMsg.innerHTML = response.error;
-    } else {
-      GFG_FUN(response);
+  
+        makeTable(response);
       
-    }
 });
-function GFG_FUN(list) {
+function makeTable(list) {
     var cols = [];
      
     for (var i = 0; i < list.length; i++) {
         
         for (var k in list[i]) {
             if (cols.indexOf(k) === -1 && (k != "_id" && k !="__v")) {
-                // Push all keys to the array
                 cols.push(k);
             }
         }
     }
      
-    // Create a table element
     var table = document.createElement("table");
      
-    // Create table row tr element of a table
     var tr = table.insertRow(-1);
      
     for (var i = 0; i < cols.length; i++) {
         
-    
-              // Create the table header th element
+
         var theader = document.createElement("th");
         theader.innerHTML = cols[i];
-         
-        // Append columnName to the table row
+
         tr.appendChild(theader);
         
         
       
     }
      
-    // Adding the data to the table
+  
     for (var i = 0; i < list.length; i++) {
          
-        // Create a new row
+       
         trow = table.insertRow(-1);
         for (var j = 0; j < cols.length; j++) {
             var cell = trow.insertCell(-1);
              
-            // Inserting the cell at particular place
+            
             cell.innerHTML = list[i][cols[j]];
             cell.setAttribute("contenteditable", true);
         }
         var cell = trow.insertCell(-1);
         const id = list[i].id;
-        const name = cell.parentNode.childNodes[1].innerText;
-        // console.log(tr.childNodes[-1]);
+        const name = cell.parentNode.childNodes[1];
         
-        const email = cell.parentNode.childNodes[2].innerText;
-        console.log(cell.parentNode.childNodes[1].innerText);
-        // console.log(name);
+        
+        const email = cell.parentNode.childNodes[2];
         var updbutton = document.createElement("button");
         updbutton.innerHTML = "Update";
-        updbutton.onclick = () => {updateUser(id, name, email)};
+        updbutton.onclick = () => {
+            updateUser(id, name.innerText, email.innerText)};
         cell.appendChild(updbutton);
 
 
@@ -105,9 +96,15 @@ function GFG_FUN(list) {
         
         delbutton.onclick = () => {deleteUser(id)};
         cell.appendChild(delbutton);
+
+        var showdetailsbutton = document.createElement("button");
+        showdetailsbutton.innerHTML = "Show Details";
+
+        showdetailsbutton.onclick = () => {showDetails(id)};
+        cell.appendChild(showdetailsbutton);
+
     }
      
-    // Add the newly created table containing json data
     var el = document.getElementById("table");
     el.innerHTML = "";
     el.appendChild(table);
@@ -130,4 +127,17 @@ function deleteUser(id){
             "Content-Type": "application/json"
         }
     });
+}
+function showDetails(id){
+    fetch(`/api/users/${id}`, { 
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        
+    }).then(res => res.json())
+    .then(response => {
+        document.getElementById("details").innerHTML = JSON.stringify(response);
+
+    })
 }

@@ -31,7 +31,7 @@ router.post("/user", async (req, res) => {
 
 router.get("/users/:id", async (req, res) => {
     try {
-    const user = await User.findOne({_id: req.params.id});
+    const user = await User.findOne({id: req.params.id});
     res.send(user);
 } catch {
     res.status(404);
