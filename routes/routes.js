@@ -42,9 +42,9 @@ router.get("/users/:id", async (req, res) => {
 router.patch("/users/:id", async (req, res) => {
     try {
     const user = await User.findOne({ id: req.params.id });
-    console.log(req.header("name"));
+    console.log(req.header("name"), req.header("email"));
     user.name = req.header("name");
-
+    
     user.email = req.header("email");
     
     await user.save();

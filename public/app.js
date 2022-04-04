@@ -68,7 +68,7 @@ function GFG_FUN(list) {
          
         // Append columnName to the table row
         tr.appendChild(theader);
-      
+        
         
       
     }
@@ -84,20 +84,22 @@ function GFG_FUN(list) {
             // Inserting the cell at particular place
             cell.innerHTML = list[i][cols[j]];
             cell.setAttribute("contenteditable", true);
-            
         }
-
         var cell = trow.insertCell(-1);
         const id = list[i].id;
-        const name = cell.value;
-        console.log(trow.childNodes[1]);
+        const name = cell.parentNode.childNodes[1].innerText;
         // console.log(tr.childNodes[-1]);
         
-        const email = list[i].email;
+        const email = cell.parentNode.childNodes[2].innerText;
+        console.log(cell.parentNode.childNodes[1].innerText);
+        // console.log(name);
         var updbutton = document.createElement("button");
         updbutton.innerHTML = "Update";
         updbutton.onclick = () => {updateUser(id, name, email)};
         cell.appendChild(updbutton);
+
+
+        
         var delbutton = document.createElement("button");
         delbutton.innerHTML = "Delete";
         
