@@ -19,6 +19,7 @@ router.get("/users", async (req, res) => {
 });
 
 router.post("/user", async (req, res) => {
+    try{
     const user = new User({
         id: await setID(),
         name: req.body.name,
@@ -26,7 +27,10 @@ router.post("/user", async (req, res) => {
     });
     await user.save();
     res.send(user);
-
+}catch{
+    res.status(404);
+    res.send({error: "Could not create user"})
+}
 });
 
 router.get("/users/:id", async (req, res) => {
