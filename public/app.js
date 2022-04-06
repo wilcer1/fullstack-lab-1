@@ -80,12 +80,13 @@ function makeTable(list) {
         var cell = trow.insertCell(-1);
         const id = list[i].id;
         const name = cell.parentNode.childNodes[1];
-        
-        
         const email = cell.parentNode.childNodes[2];
+
+
         var updbutton = document.createElement("button");
         updbutton.innerHTML = "Update";
         updbutton.onclick = () => {
+            console.log(cell.parentNode.childNodes[1]);
             updateUser(id, name.innerText, email.innerText)};
         cell.appendChild(updbutton);
 
@@ -93,13 +94,11 @@ function makeTable(list) {
         
         var delbutton = document.createElement("button");
         delbutton.innerHTML = "Delete";
-        
         delbutton.onclick = () => {deleteUser(id)};
         cell.appendChild(delbutton);
 
         var showdetailsbutton = document.createElement("button");
         showdetailsbutton.innerHTML = "Show Details";
-
         showdetailsbutton.onclick = () => {showDetails(id)};
         cell.appendChild(showdetailsbutton);
 
